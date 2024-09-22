@@ -167,9 +167,10 @@ def setup_calc(atoms, settings):
         calc = sgx.sgx_fit(calc, auxbasis=auxbasis, pjs=pjs)
         calc.with_df.__dict__.update(**sgx_params)
     elif settings['control']['density_fit']:
-        calc = calc.density_fit(only_dfj=settings['control'].get('only_dfj') or False)
+        # calc = calc.density_fit(only_dfj=settings['control'].get('only_dfj') or False)
         if settings['control'].get('df_basis') is not None:
-            calc.with_df.auxbasis = settings['control']['df_basis']
+            # calc.with_df.auxbasis = settings['control']['df_basis']
+            calc.density_fit(auxbasis=settings['control']['df_basis']) 
 
     if settings['calc'].get('nlc') is not None:
         calc.nlcgrids.level = 1
