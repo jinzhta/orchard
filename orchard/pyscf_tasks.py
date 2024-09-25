@@ -119,6 +119,11 @@ class SCFCalcFromRestart(FiretaskBase):
 
     def run_task(self, fw_spec):
         settings = get_pyscf_settings(self['new_settings'], default_settings=fw_spec['settings'])
+        # 09/25/24 modified
+        # keep spin 和 charge from first step dft calculation results run_info.yaml 
+        # instead of from new_settings(which is from xyz files)
+        settings['mol']['spin'] = fw_spec['settings']['mol']['spin']
+        settings['mol']['charge'] = fw_spec['settings']['mol']['charge']
         start_time = time.monotonic()
         calc = pyscf_caller.setup_calc(Atoms.fromdict(fw_spec['struct']), settings)
         calc.kernel(dm0=fw_spec['calc'].make_rdm1())
