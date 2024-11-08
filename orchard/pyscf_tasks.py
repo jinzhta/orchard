@@ -54,6 +54,8 @@ class SCFCalc(FiretaskBase):
     optional_params = ['require_converged', 'method_description']
 
     def run_task(self, fw_spec):
+        mol_id = fw_spec['_tasks'][0].get('system_id', 'Unknown_Molecule') # 09/25/24 added for debugging
+        print(f"Running SCF calculation for molecule ID: {mol_id}") # 09/25/24 added for debugging
         settings = get_pyscf_settings(self['settings'])
         start_time = time.monotonic()
         calc = pyscf_caller.setup_calc(Atoms.fromdict(self['struct']), settings)
@@ -91,6 +93,7 @@ class LoadSCFCalc(FiretaskBase):
             self['system_id'],
             functional=self['method_name'],
         )
+        print(f"Loading SCF calculation for molecule ID: {self['system_id']}") # 09/25/24 added for debugging
         hdf5file = os.path.join(load_dir, 'data.hdf5')
         in_file = os.path.join(load_dir, 'run_info.yaml')
         with open(in_file, 'r') as f:
