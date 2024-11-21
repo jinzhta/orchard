@@ -191,8 +191,23 @@ def setup_calc(atoms, settings):
             calc.with_dftd3.xc = d3xc
     elif settings['control'].get('dftd4'):
         import dftd4.pyscf as pyd4
+
+        from dftd4.parameters import get_damping_param
+        # Print Settings
+        print("\n=== DFTD4 Settings ===")
+        print("Calculation XC:", settings["calc"].get('xc'))
+        print("DFTD4 functional:", settings["control"].get("dftd4_functional"))
+
         calc = pyd4.energy(calc)
         d4func = settings['control'].get('dftd4_functional')
+
+        # Print Parameters
+        print("\n=== DFTD4 Parameters ===")
+        if d4func is not None:
+            print("Explicitly specified parameters:", get_damping_param(d4func))
+        print("Default parameters:", get_damping_param(settings["calc"].get('xc')))
+        print("=====================\n")
+
         if d4func is not None:
             calc.with_dftd4 = pyd4.DFTD4Dispersion(
                 calc.mol, xc=d4func.upper().replace(" ", "")
