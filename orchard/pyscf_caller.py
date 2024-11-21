@@ -205,7 +205,10 @@ def setup_calc(atoms, settings):
         print("\n=== DFTD4 Parameters ===")
         if d4func is not None:
             print("Explicitly specified parameters:", get_damping_param(d4func))
-        print("Default parameters:", get_damping_param(settings["calc"].get('xc')))
+        if settings["calc"].get('xc') is None:
+            print("settings['calc'].get('xc') is None")
+        else:
+            print("Default parameters:", get_damping_param(settings["calc"].get('xc')))
         print("=====================\n")
 
         if d4func is not None:
